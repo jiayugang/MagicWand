@@ -5,12 +5,16 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.magic.wand.Constants.Config
 import com.android.magic.wand.R
 import com.android.magic.wand.utils.PermissionUtil
 import com.android.magic.wand.utils.UpdateLog
+import com.android.magic.wand.view.BlurringView
+import com.android.magic.wand.view.BlurringView2
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -22,12 +26,22 @@ class StartActivity : AppCompatActivity() {
 
     private var mAppUpdateManager: AppUpdateManager? = null
     private val REQUEST_CODE_UPDATE = 9102
+    private var mBlurringView: BlurringView2? = null
+    private var mImageView: ImageView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-        if(!PermissionUtil.requirePermissions(this)){
+        mImageView = findViewById(R.id.iv_blur)
+        mBlurringView = findViewById(R.id.blurring_view)
+
+        if (mBlurringView != null) {
+            mBlurringView!!.setBlurredView(mImageView)
+            mBlurringView!!.invalidate()
+        }
+
+        if (!PermissionUtil.requirePermissions(this)) {
             init()
         }
     }
@@ -47,13 +61,13 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    fun init(){
+    fun init() {
         mAppUpdateManager = AppUpdateManagerFactory.create(this)
     }
 
     override fun onResume() {
         super.onResume()
-        if(!PermissionUtil.requirePermissions(this)){
+        if (!PermissionUtil.requirePermissions(this)) {
             val appUpdateInfo = mAppUpdateManager!!.getAppUpdateInfo()
             appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
                 UpdateLog.w(TAG, "onResume onSuccess")

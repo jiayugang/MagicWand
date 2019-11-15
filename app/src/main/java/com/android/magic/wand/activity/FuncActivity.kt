@@ -2,12 +2,12 @@ package com.android.magic.wand.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.constraintlayout.widget.Group
 import com.android.magic.wand.Constants.Config
 import com.android.magic.wand.R
+import com.android.magic.wand.utils.UpdateLog
 import com.android.magic.wand.view.BubblePop
 
 class FuncActivity : AppCompatActivity() {
@@ -23,31 +23,31 @@ class FuncActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_func)
 
-        gBubble = findViewById(R.id.bubble_group)
-        gCircle = findViewById(R.id.circle_group)
-
         val intent = intent
         if (intent == null) {
             finish()
         }
-        showHide(intent!!.getStringExtra("function"))
-
+        gBubble = findViewById(R.id.bubble_group)
+        gCircle = findViewById(R.id.circle_group)
         mSeekBar = findViewById(R.id.seekBar)
         mBubblePop = findViewById(R.id.bubble)
+
+        showHide(intent!!.getStringExtra("function"))
+        UpdateLog.d(TAG, "mSeekBar:$mSeekBar")
         mSeekBar!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                Log.d(TAG, "onProgressChanged:$progress")
+                UpdateLog.d(TAG, "onProgressChanged:$progress")
                 if (mBubblePop != null) {
                     mBubblePop!!.setSpeed(progress)
                 }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                Log.d(TAG, "onStartTrackingTouch:" + seekBar.progress)
+                UpdateLog.d(TAG, "onStartTrackingTouch:" + seekBar.progress)
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                Log.d(TAG, "onStopTrackingTouch:" + seekBar.progress)
+                UpdateLog.d(TAG, "onStopTrackingTouch:" + seekBar.progress)
             }
         })
     }

@@ -18,16 +18,21 @@ import java.util.Random;
 
 public class BubblePop extends View {
     private static final String TAG = "BubblePop";
-    private int mBubbleMaxRadius = 80;          // 气泡最大半径 px
+    private int mBubbleMaxRadius = 100;          // 气泡最大半径 px
     private int mBubbleMinRadius = 20;           // 气泡最小半径 px
-    private int mBubbleMaxSize = 30;            // 气泡数量
-    private int mBubbleRefreshTime = 20;        // 刷新间隔
-    private int mBubbleMaxSpeedY = 30;           // 气泡速度
+    private int mBubbleMaxSize = 20;            // 气泡数量
+    private int mBubbleRefreshTime = 15;        // 刷新间隔
+    private int mBubbleMaxSpeedY = 20;           // 气泡速度
     private int mSpeed = -1;
-    private int mBubbleAlpha = 186;             // 气泡画笔
+    private int mBubbleAlpha = 136;             // 气泡画笔
 
     private Paint mWaterPaint;                  // 水画笔
     private Paint mBubblePaint;                 // 气泡画笔
+
+    private BubbleColor mBubbleColor;           //气泡颜色
+    private BackgroundColor mBackgroundColor;   //背景颜色
+
+    private boolean sGravity = true;   //重力
 
     private class Bubble {
         int radius;     // 气泡半径
@@ -63,6 +68,17 @@ public class BubblePop extends View {
         mWaterPaint = new Paint();
         mWaterPaint.setAntiAlias(true);
 
+        mBubbleColor = new BubbleColor();           //气泡颜色
+        mBackgroundColor = new BackgroundColor();   //背景颜色
+
+        mBubbleColor.start = getResources().getColor(R.color.red);
+        mBubbleColor.center = getResources().getColor(android.R.color.holo_red_light);
+        mBubbleColor.end = getResources().getColor(android.R.color.holo_red_dark);
+
+        mBackgroundColor.top = getResources().getColor(android.R.color.white);
+        mBackgroundColor.center = getResources().getColor(R.color.light_pink);
+        mBackgroundColor.bottom = getResources().getColor(R.color.dark_pink);
+
         initBubble();
     }
 
@@ -77,11 +93,11 @@ public class BubblePop extends View {
     }
 
     public void setBubbleColor(BubbleColor bubbleColor) {
-
+        mBubbleColor = bubbleColor;
     }
 
     public void setBackgroundColor(BackgroundColor backgroundColor) {
-
+        mBackgroundColor = backgroundColor;
     }
 
     public void start() {
@@ -103,9 +119,9 @@ public class BubblePop extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         Shader gradient = new LinearGradient(0, 0, 0, getHeight(), new int[] {
-                getResources().getColor(android.R.color.white),
-                getResources().getColor(android.R.color.holo_blue_bright),
-                getResources().getColor(android.R.color.holo_blue_dark) },
+                mBackgroundColor.top,
+                mBackgroundColor.center,
+                mBackgroundColor.bottom },
                 null, Shader.TileMode.CLAMP);
         mWaterPaint.setShader(gradient);
     }
@@ -125,7 +141,6 @@ public class BubblePop extends View {
     // 初始化气泡
     private void initBubble() {
         mBubblePaint = new Paint();
-        mBubblePaint.setColor(Color.WHITE);
         mBubblePaint.setStyle(Paint.Style.FILL);
         mBubblePaint.setAlpha(mBubbleAlpha);
     }
@@ -142,7 +157,7 @@ public class BubblePop extends View {
                         refreshBubbles();
                         postInvalidate();
                     } catch (InterruptedException e) {
-                        System.out.println("Bubble线程结束");
+                        e.printStackTrace();
                         break;
                     }
                 }
@@ -165,10 +180,10 @@ public class BubblePop extends View {
             if (null == bubble) continue;
             LinearGradient shader = new LinearGradient(bubble.x, bubble.y - bubble.radius, // 渐变区域,上下
                     bubble.x, bubble.y + bubble.radius, new int[] {
-                    getResources().getColor(android.R.color.holo_orange_light),
-                    getResources().getColor(R.color.orange),
-                    getResources().getColor(android.R.color.holo_orange_dark) }
-                    , null, Shader.TileMode.REPEAT);
+                    mBubbleColor.start,
+                    mBubbleColor.center,
+                    mBubbleColor.end }
+                    , null, Shader.TileMode.MIRROR);
             mBubblePaint.setShader(shader);
             canvas.drawCircle(bubble.x, bubble.y,
                     bubble.radius, mBubblePaint);
@@ -186,17 +201,29 @@ public class BubblePop extends View {
         Bubble bubble = new Bubble();
         int radius = random.nextInt(mBubbleMaxRadius - mBubbleMinRadius);
         radius += mBubbleMinRadius;
+        bubble.radius = radius;
+
         if (mSpeed > 0) {
             bubble.speedY = mSpeed;
         } else {
-            float speedY = random.nextFloat() * mBubbleMaxSpeedY;
-            while (speedY < 1) {
-                speedY = random.nextFloat() * mBubbleMaxSpeedY;
+            if (sGravity) {
+                if(bubble.radius >= 20 && bubble.radius <= 30){
+                    bubble.speedY = mBubbleMaxSpeedY;
+                } else if(bubble.radius > 30 && bubble.radius <= 40){
+                    bubble.speedY = 15;
+                } else if(bubble.radius > 40 && bubble.radius <= 80){
+                    bubble.speedY = 10;
+                } else {
+                    bubble.speedY = 5;
+                }
+            } else {
+                float speedY = random.nextFloat() * mBubbleMaxSpeedY;
+                while (speedY < 1) {
+                    speedY = random.nextFloat() * mBubbleMaxSpeedY;
+                }
+                bubble.speedY = speedY;
             }
-            bubble.speedY = speedY;
         }
-
-        bubble.radius = radius;
 
         float xx = random.nextFloat();
         bubble.x = xx > 0 ? xx * getWidth() : getWidth();
