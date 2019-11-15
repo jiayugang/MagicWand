@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="default_image_radius">4dp</dimen>
+    <dimen name="native_ad_title_size">15sp</dimen>
+    <dimen name="native_ad_social_context_size">12sp</dimen>
+</resources>

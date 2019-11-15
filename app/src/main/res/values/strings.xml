@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MagicWand</string>
+    <string name="ads_tittle" translatable="false">AD</string>
+</resources>

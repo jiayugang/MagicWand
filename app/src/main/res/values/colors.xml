@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="orange">#ffFFA500</color>
+
+    <color name="ads_download_text_color">#FF4599F7</color>
+    <color name="ads_download_disable_text_color">#ffcccccc</color>
+    <color name="ads_white">#FFFFFF</color>
+    <color name="ads_maintext_color">#E6000000</color>
+    <color name="ads_distext_color">#80000000</color>
+</resources>

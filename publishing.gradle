@@ -1,0 +1,59 @@
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+artifactoryPublish.dependsOn('build')
+
+publishing.publications {
+
+    artifacts(MavenPublication) {
+
+        groupId GROUP
+        artifactId "${project.getName()}"
+        version = VERSION_NAME
+
+        def jar = "build/libs/${project.getName()}-${version}.jar"
+        def aar = "build/outputs/aar/${project.getName()}-release.aar"
+
+        if (file(jar).exists()) {
+            artifact(jar)
+        }
+
+        if (file(aar).exists()) {
+            artifact(aar)
+        }
+
+        pom.withXml {
+            def dependencies = asNode().appendNode('dependencies')
+            configurations.compile.allDependencies.each {
+                if (it.group != null) {
+
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.group)
+                    dependency.appendNode('artifactId', it.name)
+                    dependency.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+
+artifactory {
+    clientConfig.setIncludeEnvVars(true)
+    clientConfig.info.addEnvironmentProperty('test.adding.dynVar', new Date().toString())
+
+    contextUrl = 'https://maven.360os.xyz/artifactory'
+    publish {
+        repository {
+            repoKey = 'os-dev'
+            username = "dev"
+            password = "dev360os!"
+        }
+        defaults {
+            publications('artifacts')
+            publishArtifacts = true
+            // Properties to be attached to the published artifacts.
+            properties = ['qa.level': 'basic', 'dev.team': 'core']
+            publishPom = true
+        }
+    }
+}
