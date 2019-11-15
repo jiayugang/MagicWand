@@ -18,13 +18,13 @@ import java.util.Random;
 
 public class BubblePop extends View {
     private static final String TAG = "BubblePop";
-    private int mBubbleMaxRadius = 60;          // 气泡最大半径 px
-    private int mBubbleMinRadius = 10;           // 气泡最小半径 px
+    private int mBubbleMaxRadius = 80;          // 气泡最大半径 px
+    private int mBubbleMinRadius = 20;           // 气泡最小半径 px
     private int mBubbleMaxSize = 30;            // 气泡数量
     private int mBubbleRefreshTime = 20;        // 刷新间隔
     private int mBubbleMaxSpeedY = 30;           // 气泡速度
     private int mSpeed = -1;
-    private int mBubbleAlpha = 128;             // 气泡画笔
+    private int mBubbleAlpha = 186;             // 气泡画笔
 
     private Paint mWaterPaint;                  // 水画笔
     private Paint mBubblePaint;                 // 气泡画笔
@@ -70,7 +70,7 @@ public class BubblePop extends View {
         if (speed > mBubbleMaxSpeedY) {
             mSpeed = mBubbleMaxSpeedY;
         } else if (speed == 0) {
-            mSpeed = 5;
+            mSpeed = 10;
         } else {
             mSpeed = speed;
         }
