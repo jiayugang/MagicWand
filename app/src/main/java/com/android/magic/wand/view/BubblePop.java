@@ -1,11 +1,7 @@
 package com.android.magic.wand.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Shader;
+import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -40,6 +36,7 @@ public class BubblePop extends View {
         float speedX;   // 平移速度
         float x;        // 气泡x坐标
         float y;        // 气泡y坐标
+        boolean isBlur; //是否模糊
     }
 
     public class BubbleColor {
@@ -78,6 +75,8 @@ public class BubblePop extends View {
         mBackgroundColor.top = getResources().getColor(android.R.color.white);
         mBackgroundColor.center = getResources().getColor(R.color.light_pink);
         mBackgroundColor.bottom = getResources().getColor(R.color.dark_pink);
+
+        setLayerType(LAYER_TYPE_HARDWARE, null);
 
         initBubble();
     }
@@ -142,7 +141,22 @@ public class BubblePop extends View {
     private void initBubble() {
         mBubblePaint = new Paint();
         mBubblePaint.setStyle(Paint.Style.FILL);
-        mBubblePaint.setAlpha(mBubbleAlpha);
+    }
+
+    private void resetBubble(Bubble bubble){
+        LinearGradient shader = new LinearGradient(bubble.x, bubble.y - bubble.radius, // 渐变区域,上下
+                bubble.x, bubble.y + bubble.radius, new int[] {
+                mBubbleColor.start,
+                mBubbleColor.center,
+                mBubbleColor.end }
+                , null, Shader.TileMode.MIRROR);
+
+        mBubblePaint.setShader(shader);
+        if (bubble.isBlur) {
+            mBubblePaint.setAlpha(30);
+        } else {
+            mBubblePaint.setAlpha(mBubbleAlpha);
+        }
     }
 
     // 开始气泡线程
@@ -178,13 +192,7 @@ public class BubblePop extends View {
         List<Bubble> list = new ArrayList<>(mBubbles);
         for (Bubble bubble : list) {
             if (null == bubble) continue;
-            LinearGradient shader = new LinearGradient(bubble.x, bubble.y - bubble.radius, // 渐变区域,上下
-                    bubble.x, bubble.y + bubble.radius, new int[] {
-                    mBubbleColor.start,
-                    mBubbleColor.center,
-                    mBubbleColor.end }
-                    , null, Shader.TileMode.MIRROR);
-            mBubblePaint.setShader(shader);
+            resetBubble(bubble);
             canvas.drawCircle(bubble.x, bubble.y,
                     bubble.radius, mBubblePaint);
         }
@@ -233,6 +241,12 @@ public class BubblePop extends View {
             speedX = random.nextFloat() - 0.5f;
         }
         bubble.speedX = speedX * 2;
+        int blur = random.nextInt(10);
+        if (blur >= 3 && blur < 5) {
+            bubble.isBlur = true;
+        } else {
+            bubble.isBlur = false;
+        }
         mBubbles.add(bubble);
     }
 
