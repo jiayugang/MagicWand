@@ -52,10 +52,10 @@
             android:text="@string/clean_scanned_has_large_cache"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/clean_mem"/>
+            app:layout_constraintTop_toBottomOf="@+id/home_button"/>
     <TextView
             android:text="@string/clean_to_memory"
             android:layout_width="0dp"
@@ -63,18 +63,15 @@
             android:id="@+id/clean_mem"
             android:gravity="center"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/toolbar_image"
-            app:layout_constraintTop_toTopOf="@+id/toolbar_image"/>
+            app:layout_constraintTop_toBottomOf="@+id/clean_tips"
+            app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
             android:text="@string/clean_to_cache"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/clean_cache"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +90,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="@+id/toolbar_image"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/meminfo_tips"/>
     <TextView
@@ -102,10 +100,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/meminfo_tips"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="10dp"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="#99000000"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar_image"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
