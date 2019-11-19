@@ -6,19 +6,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.magic.wand.Constants.Config
 import com.android.magic.wand.R
 import com.android.magic.wand.utils.PermissionUtil
 import com.android.magic.wand.utils.UpdateLog
-import com.android.magic.wand.view.BlurringView
 import com.android.magic.wand.view.BlurringView2
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 
 class StartActivity : AppCompatActivity() {
 
@@ -27,7 +26,7 @@ class StartActivity : AppCompatActivity() {
     private var mAppUpdateManager: AppUpdateManager? = null
     private val REQUEST_CODE_UPDATE = 9102
     private var mBlurringView: BlurringView2? = null
-    private var mImageView: ImageView?=null
+    private var mImageView: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,14 +60,47 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    fun init() {
-        mAppUpdateManager = AppUpdateManagerFactory.create(this)
+    private fun init() {
+        try {
+            val type: Int = AppUpdateType.FLEXIBLE
+
+            //AppUpdateType.IMMEDIATE
+
+            mAppUpdateManager = AppUpdateManagerFactory.create(this)
+            val appUpdateInfo = mAppUpdateManager!!.appUpdateInfo
+            appUpdateInfo.addOnCompleteListener { task ->
+                UpdateLog.d(TAG, "toUpdateInApp onComplete")
+                if (task.isSuccessful) {
+                    // 监听成功，不一定检测到更新
+                    val it = task.result
+                    val available = it.updateAvailability()
+                    UpdateLog.d(TAG, "toUpdateInApp onComplete:$available")
+                    if (available == UpdateAvailability.UPDATE_AVAILABLE && it.isUpdateTypeAllowed(type)) { // 检测到更新可用且支持即时更新
+                        try {
+
+                            UpdateLog.d(TAG, "toUpdateInApp check success")
+                            mAppUpdateManager!!.startUpdateFlowForResult(it, type, this, REQUEST_CODE_UPDATE)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                    } else {
+                        UpdateLog.d(TAG, "toUpdateInApp check error 1")
+
+                    }
+                } else {
+                    UpdateLog.d(TAG, "toUpdateInApp check error 2 " + task.exception)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         if (!PermissionUtil.requirePermissions(this)) {
-            val appUpdateInfo = mAppUpdateManager!!.getAppUpdateInfo()
+            val appUpdateInfo = mAppUpdateManager!!.appUpdateInfo
             appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
                 UpdateLog.w(TAG, "onResume onSuccess")
                 try {
@@ -106,6 +138,8 @@ class StartActivity : AppCompatActivity() {
         when (view!!.id) {
             R.id.bubble -> startAc(Config.BUBBLE_POP)
             R.id.circle -> startAc(Config.CIRCLE)
+            R.id.clean -> startAc(Config.CLEAN)
+            R.id.scroll -> startAc(ScrollingActivity::class.java)
         }
     }
 
@@ -118,4 +152,14 @@ class StartActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
+    private fun startAc(cls: Class<*>) {
+        try {
+            val intent = Intent(this, cls)
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
 }

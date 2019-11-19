@@ -14,4 +14,38 @@
     <color name="ads_white">#FFFFFF</color>
     <color name="ads_maintext_color">#E6000000</color>
     <color name="ads_distext_color">#80000000</color>
+
+    <color name="bubble_start">#FFF0F5</color>
+    <color name="bubble_center">#ffff00</color>
+    <color name="bubble_end">#ffFFA500</color>
+
+    <color name="status_low_start">#19D3E7</color>
+    <color name="status_low_center">#0DBCF2</color>
+    <color name="status_low_end">#00A3FF</color>
+
+    <color name="status_medium_start">#1CBFDA</color>
+    <color name="status_medium_center">#1DA6EA</color>
+    <color name="status_medium_end">#1D8AFA</color>
+
+    <color name="status_high_start">#C460E1</color>
+    <color name="status_high_center">#A45AEC</color>
+    <color name="status_high_end">#874FF9</color>
+
+    <color name="status_critical_start">#FFF0E7</color>
+    <color name="status_critical_center">#FFF1EF</color>
+    <color name="status_critical_end">#EAF8FF</color>
+
+    <color name="clean_bubble_low_top">#A2F3FF</color>
+    <color name="clean_bubble_low_bottom">#63C6FF</color>
+
+    <color name="clean_bubble_medium_top">#FFDFA8</color>
+    <color name="clean_bubble_medium_bottom">#FFB587</color>
+
+    <color name="clean_bubble_high_top">#FFC1A8</color>
+    <color name="clean_bubble_high_bottom">#FF7D80</color>
+
+    <color name="clean_bg_low_bottom">#EAF8FF</color>
+    <color name="clean_bg_medium_bottom">#FFF0E7</color>
+    <color name="clean_bg_high_bottom">#FFF1EF</color>
+
 </resources>

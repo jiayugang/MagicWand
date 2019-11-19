@@ -12,10 +12,10 @@
     <!--高斯模糊view的属性-->
     <declare-styleable name="PxBlurringView">
         <!--0 < radius <= 25-->
-        <attr name="blurRadius" format="integer" />
-        <attr name="downsampleFactor" format="integer" />
+        <attr name="blurRadius" format="integer"/>
+        <attr name="downsampleFactor" format="integer"/>
         <!--模糊的颜色 默认50%白色-->
-        <attr name="overlayColor" format="color" />
+        <attr name="overlayColor" format="color"/>
     </declare-styleable>
     <!--高斯模糊当前-->
     <style name="circle_vague_dialog_style" parent="@android:style/Theme.Dialog">
@@ -38,5 +38,11 @@
         <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
     </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

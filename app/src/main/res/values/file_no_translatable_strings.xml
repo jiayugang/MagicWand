@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="clean_main_scanning" translatable="false">扫描中</string>
+    <string name="clean_scanned_has_large_cache" translatable="false">发现大量垃圾，手机变慢</string>
+    <string name="clean_scanned_has_cache" translatable="false">发现垃圾，手机变慢</string>
+    <string name="clean_to_memory" translatable="false">待清理内存: %1$s</string>
+    <string name="clean_to_cache" translatable="false">待清理垃圾: %1$s</string>
+    <string name="clean_files" translatable="false">Clean</string>
 </resources>
