@@ -70,6 +70,16 @@
                     android:textColor="@android:color/holo_blue_dark"
                     android:onClick="onViewClick"
                     android:text="滑动tab"/>
+
+            <Button
+                    android:id="@+id/round"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/clean_text_background"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:onClick="onViewClick"
+                    android:text="圆角图片"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

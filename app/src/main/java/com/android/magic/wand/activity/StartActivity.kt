@@ -140,6 +140,7 @@ class StartActivity : AppCompatActivity() {
             R.id.circle -> startAc(Config.CIRCLE)
             R.id.clean -> startAc(Config.CLEAN)
             R.id.scroll -> startAc(ScrollingActivity::class.java)
+            R.id.round -> startAc(RoundActivity::class.java)
         }
     }
 

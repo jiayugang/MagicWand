@@ -17,6 +17,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.RoundActivity">
+        </activity>
         <activity
                 android:name=".activity.ScrollingActivity"
                 android:label="@string/title_activity_scrolling"

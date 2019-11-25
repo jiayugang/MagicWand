@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="RoundedImageView">
+        <attr name="left_top" format="integer"/>
+        <attr name="right_top" format="integer"/>
+        <attr name="left_bottom" format="integer"/>
+        <attr name="right_bottom" format="integer"/>
+        <attr name="bg_color" format="color"/>
+    </declare-styleable>
+
+</resources>
